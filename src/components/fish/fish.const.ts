@@ -14,13 +14,14 @@ enum Area {
   pier = "Pier"
 }
 
-interface Fish {
+export interface Fish {
   id: number;
   imageUrl: string;
   name: string;
   area: Area;
   appearingMonths: MonthRange;
   appearingHours: HourRange;
+  isCaught: boolean;
 }
 
 export const allFish: Fish[] = [
@@ -31,7 +32,8 @@ export const allFish: Fish[] = [
     name: "Soft-shelled turtle",
     area: Area.river,
     appearingMonths: createMonthRange([8, 9]),
-    appearingHours: createHourRange([16, 9])
+    appearingHours: createHourRange([16, 9]),
+    isCaught: false
   },
   {
     id: 64,
@@ -40,7 +42,8 @@ export const allFish: Fish[] = [
     name: "Moray eel",
     area: Area.sea,
     appearingMonths: createMonthRange([8, 10]),
-    appearingHours: allDay()
+    appearingHours: allDay(),
+    isCaught: false
   },
   {
     id: 71,
@@ -49,7 +52,8 @@ export const allFish: Fish[] = [
     name: "Ray",
     area: Area.sea,
     appearingMonths: createMonthRange([8, 11]),
-    appearingHours: createHourRange([4, 21])
+    appearingHours: createHourRange([4, 21]),
+    isCaught: false
   },
   {
     id: 72,
@@ -58,6 +62,7 @@ export const allFish: Fish[] = [
     name: "Saw shark",
     area: Area.sea,
     appearingMonths: createMonthRange([6, 9]),
-    appearingHours: createHourRange([16, 9])
+    appearingHours: createHourRange([16, 9]),
+    isCaught: false
   }
 ];
