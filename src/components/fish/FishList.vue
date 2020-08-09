@@ -16,22 +16,50 @@
       </div>
     </div>
     <h2>Fish Details</h2>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Area</th>
-        <th>Appearing months</th>
-        <th>Appearing hours</th>
-      </tr>
-      <tr v-for="fish in allFish" :key="fish.id">
-        <td>{{ fish.id }}</td>
-        <td>{{ fish.name }}</td>
-        <td>{{ fish.area }}</td>
-        <td>{{ fish.appearingMonths.readableName }}</td>
-        <td>{{ fish.appearingHours.readableName }}</td>
-      </tr>
-    </table>
+    <div class="table">
+      <form class="filter-list">
+        <div class="filter">
+          <input type="checkbox" id="uncaught" v-model="uncaught" />
+          <label for="uncaught">Uncaught only</label>
+        </div>
+        <div class="filter">
+          <input type="radio" id="all" name="time" value="all" v-model="time" />
+          <label for="all">All</label><br />
+          <input
+            type="radio"
+            id="month"
+            name="time"
+            value="month"
+            v-model="time"
+          />
+          <label for="month">Current month</label><br />
+          <input
+            type="radio"
+            id="hour"
+            name="time"
+            value="hour"
+            v-model="time"
+          />
+          <label for="hour">Current hour</label>
+        </div>
+      </form>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Area</th>
+          <th>Appearing months</th>
+          <th>Appearing hours</th>
+        </tr>
+        <tr v-for="fish in filteredFish" :key="fish.id">
+          <td>{{ fish.id }}</td>
+          <td>{{ fish.name }}</td>
+          <td>{{ fish.area }}</td>
+          <td>{{ fish.appearingMonths.readableName }}</td>
+          <td>{{ fish.appearingHours.readableName }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -42,6 +70,34 @@ import { allFish, Fish } from "./fish.const";
 @Component
 export default class FishList extends Vue {
   allFish = allFish;
+  uncaught = false;
+  time = "all";
+
+  get filteredFish() {
+    let fishList: Fish[] = allFish;
+
+    if (this.uncaught) {
+      fishList = fishList.filter(fish => !fish.isCaught);
+    }
+
+    if (this.time === "hour") {
+      const date = new Date();
+      const month = date.getMonth();
+      const hour = date.getHours();
+
+      fishList = fishList.filter(
+        fish =>
+          fish.appearingMonths.months[month] && fish.appearingHours.hours[hour]
+      );
+    } else if (this.time === "month") {
+      const date = new Date();
+      const month = date.getMonth();
+
+      fishList = fishList.filter(fish => fish.appearingMonths.months[month]);
+    }
+
+    return fishList;
+  }
 
   getFish(fishId: number): Fish {
     console.log(`Checking fish ID ${fishId}`);
@@ -142,5 +198,27 @@ td {
   bottom: 3px;
   left: 4px;
   font-size: 0.8rem;
+}
+
+.filter-list {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+}
+
+.filter > input {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 5px;
+}
+
+.filter > label {
+  margin-right: 10px;
 }
 </style>
