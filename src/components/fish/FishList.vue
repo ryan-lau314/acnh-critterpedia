@@ -4,9 +4,9 @@
     <div class="grid-container">
       <div
         :class="['grid-item', { active: fish.isCaught }]"
-        v-for="fish in allFish"
+        v-for="fish in fishList"
         :key="fish.id"
-        @click="toggleIsCaught(fish.id)"
+        @click="toggleFishCaughtStatus(fish.id)"
       >
         <img
           :class="['grid-image', { active: fish.isCaught }]"
@@ -51,7 +51,7 @@
           <th>Appearing months</th>
           <th>Appearing hours</th>
         </tr>
-        <tr v-for="fish in filteredFish" :key="fish.id">
+        <tr v-for="fish in filteredFishList" :key="fish.id">
           <td>{{ fish.id }}</td>
           <td>{{ fish.name }}</td>
           <td>{{ fish.area }}</td>
@@ -65,53 +65,47 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { allFish, Fish } from "./fish.const";
+import { Fish } from "./fish.const";
+import { namespace } from "vuex-class";
+const fish = namespace("fish");
 
 @Component
 export default class FishList extends Vue {
-  allFish = allFish;
-  uncaught = false;
-  time = "all";
+  @fish.State
+  fishList!: Fish[];
 
-  get filteredFish() {
-    let fishList: Fish[] = allFish;
+  @fish.State
+  uncaughtFilter!: boolean;
 
-    if (this.uncaught) {
-      fishList = fishList.filter(fish => !fish.isCaught);
-    }
+  @fish.State
+  timeFilter!: "all" | "month" | "hour";
 
-    if (this.time === "hour") {
-      const date = new Date();
-      const month = date.getMonth();
-      const hour = date.getHours();
+  @fish.Getter
+  filteredFishList!: Fish[];
 
-      fishList = fishList.filter(
-        fish =>
-          fish.appearingMonths.months[month] && fish.appearingHours.hours[hour]
-      );
-    } else if (this.time === "month") {
-      const date = new Date();
-      const month = date.getMonth();
+  @fish.Mutation
+  toggleFishCaughtStatus!: (id: number) => void;
 
-      fishList = fishList.filter(fish => fish.appearingMonths.months[month]);
-    }
+  @fish.Mutation
+  updateUncaughtFilter!: (uncaught: boolean) => void;
 
-    return fishList;
+  @fish.Mutation
+  updateTimeFilter!: (time: "all" | "month" | "hour") => void;
+
+  get uncaught() {
+    return this.uncaughtFilter;
   }
 
-  getFish(fishId: number): Fish {
-    console.log(`Checking fish ID ${fishId}`);
-    const fish: Fish | undefined = allFish.find(fish => fish.id == fishId);
-    if (fish) {
-      return fish;
-    } else {
-      throw `Fish ID ${fishId} not found`;
-    }
+  set uncaught(uncaught) {
+    this.updateUncaughtFilter(uncaught);
   }
 
-  toggleIsCaught(fishId: number): void {
-    const fish: Fish = this.getFish(fishId);
-    fish.isCaught = !fish.isCaught;
+  get time() {
+    return this.timeFilter;
+  }
+
+  set time(time) {
+    this.updateTimeFilter(time);
   }
 }
 </script>
