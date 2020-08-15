@@ -25,15 +25,19 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
+import { getModule } from "vuex-module-decorators";
+import FishModule from "@/store/modules/fish";
+import Store from "@/store";
 import { Fish } from "./fish.const";
 import FishTableFilters from "./FishTableFilters.vue";
-const fish = namespace("fish");
+
+const fishModule: FishModule = getModule(FishModule, Store);
 
 @Component({ components: { FishTableFilters } })
 export default class FishTable extends Vue {
-  @fish.Getter
-  filteredFishList!: Fish[];
+  get filteredFishList(): Fish[] {
+    return fishModule.filteredFishList;
+  }
 }
 </script>
 

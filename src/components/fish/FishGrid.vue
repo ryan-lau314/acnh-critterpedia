@@ -21,16 +21,21 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Fish } from "./fish.const";
-import { namespace } from "vuex-class";
-const fish = namespace("fish");
+import { getModule } from "vuex-module-decorators";
+import FishModule from "@/store/modules/fish";
+import Store from "@/store";
+
+const fishModule: FishModule = getModule(FishModule, Store);
 
 @Component
 export default class FishGrid extends Vue {
-  @fish.State
-  fishList!: Fish[];
+  get fishList(): Fish[] {
+    return fishModule.fishList;
+  }
 
-  @fish.Mutation
-  toggleFishCaughtStatus!: (id: number) => void;
+  toggleFishCaughtStatus(id: number): void {
+    fishModule.toggleFishCaughtStatus(id);
+  }
 }
 </script>
 

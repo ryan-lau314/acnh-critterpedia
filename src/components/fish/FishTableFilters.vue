@@ -17,37 +17,28 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
-const fish = namespace("fish");
+import { getModule } from "vuex-module-decorators";
+import FishModule from "@/store/modules/fish";
+import Store from "@/store";
+
+const fishModule: FishModule = getModule(FishModule, Store);
 
 @Component
 export default class FishTableFilters extends Vue {
-  @fish.State
-  uncaughtFilter!: boolean;
-
-  @fish.State
-  timeFilter!: "all" | "month" | "hour";
-
-  @fish.Mutation
-  updateUncaughtFilter!: (uncaught: boolean) => void;
-
-  @fish.Mutation
-  updateTimeFilter!: (time: "all" | "month" | "hour") => void;
-
   get uncaught(): boolean {
-    return this.uncaughtFilter;
+    return fishModule.uncaughtFilter;
   }
 
   set uncaught(uncaught) {
-    this.updateUncaughtFilter(uncaught);
+    fishModule.updateUncaughtFilter(uncaught);
   }
 
   get time(): "all" | "month" | "hour" {
-    return this.timeFilter;
+    return fishModule.timeFilter;
   }
 
   set time(time) {
-    this.updateTimeFilter(time);
+    fishModule.updateTimeFilter(time);
   }
 }
 </script>
