@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <fish-list />
+    <fish-page />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import FishList from "./components/fish/FishList.vue";
+import FishPage from "./components/fish/FishPage.vue";
 
 @Component({
   components: {
-    FishList
+    FishPage
   }
 })
 export default class App extends Vue {}
