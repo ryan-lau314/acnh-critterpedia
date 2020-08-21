@@ -1,7 +1,7 @@
 import {
   HourRange,
   createHourRange,
-  allDay
+  allDay,
 } from "../shared/hour-range.interface";
 import { MonthRange, createMonthRange } from "../shared/month-range.interface";
 
@@ -11,7 +11,7 @@ enum Area {
   pond = "Pond",
   rivermouth = "River (Mouth)",
   clifftop = "River (Clifftop)",
-  pier = "Pier"
+  pier = "Pier",
 }
 
 export interface Fish {
@@ -33,7 +33,7 @@ export const allFish: Fish[] = [
     area: Area.river,
     appearingMonths: createMonthRange([8, 9]),
     appearingHours: createHourRange([16, 9]),
-    isCaught: false
+    isCaught: false,
   },
   {
     id: 64,
@@ -43,7 +43,7 @@ export const allFish: Fish[] = [
     area: Area.sea,
     appearingMonths: createMonthRange([8, 10]),
     appearingHours: allDay(),
-    isCaught: false
+    isCaught: false,
   },
   {
     id: 71,
@@ -53,7 +53,7 @@ export const allFish: Fish[] = [
     area: Area.sea,
     appearingMonths: createMonthRange([8, 11]),
     appearingHours: createHourRange([4, 21]),
-    isCaught: false
+    isCaught: false,
   },
   {
     id: 72,
@@ -63,6 +63,6 @@ export const allFish: Fish[] = [
     area: Area.sea,
     appearingMonths: createMonthRange([6, 9]),
     appearingHours: createHourRange([16, 9]),
-    isCaught: false
-  }
+    isCaught: false,
+  },
 ];

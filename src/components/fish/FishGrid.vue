@@ -35,6 +35,7 @@ export default class FishGrid extends Vue {
 
   toggleFishCaughtStatus(id: number): void {
     fishModule.toggleFishCaughtStatus(id);
+    fishModule.saveCaughtFishIds();
   }
 }
 </script>
